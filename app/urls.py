@@ -1,0 +1,1 @@
+#mokim jobs is to create urls and views on app
