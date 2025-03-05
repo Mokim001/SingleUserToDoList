@@ -23,10 +23,10 @@ def update(request,pk):
         to.title=title
         to.desc=desc
         to.save()
-        return HttpResponse(reverse('home'))
+        return HttpResponseRedirect(reverse('home'))
     return render(request,'update.html',d)
 
 def delete(request,pk):
     to=Todo.objects.get(pk=pk)
     to.delete()
-    return HttpResponse(reverse('home'))
+    return HttpResponseRedirect(reverse('home'))
