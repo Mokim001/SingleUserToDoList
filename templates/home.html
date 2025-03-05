@@ -69,7 +69,7 @@
             <button type="submit" class="btn btn-primary" data-aos="fade-up">Create</button>
         </form>
 
-        {% if Alltodos %}
+        {% if all_todos %}
         <table class="table table-dark table-striped mt-5 floating-effect" data-aos="fade-up">
             <thead>
                 <tr>
@@ -80,11 +80,11 @@
                 </tr>
             </thead>
             <tbody>
-                {% for todo in Alltodos %}
+                {% for todo in all_todos %}
                 <tr class="floating-effect" data-aos="fade-up">
                     <th scope="row">{{forloop.counter}}</th>
-                    <td>{{todo.Title}}</td>
-                    <td>{{todo.DESC}}</td>
+                    <td>{{todo.title}}</td>
+                    <td>{{todo.desc}}</td>
                     <td>
                         <!-- Add operations buttons here -->
                          <a href="{% url 'update' todo.pk %}"><button class="btn btn-warning btn-sm" data-aos="fade-up">Edit</button></a>
