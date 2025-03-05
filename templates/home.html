@@ -87,8 +87,8 @@
                     <td>{{todo.DESC}}</td>
                     <td>
                         <!-- Add operations buttons here -->
-                        <button class="btn btn-warning btn-sm" data-aos="fade-up">Edit</button>
-                        <button class="btn btn-danger btn-sm" data-aos="fade-up">Delete</button>
+                         <a href="{% url 'update' todo.pk %}"><button class="btn btn-warning btn-sm" data-aos="fade-up">Edit</button></a>
+                        <a href="{% url 'delete' todo.pk %}"><button class="btn btn-danger btn-sm" data-aos="fade-up">Delete</button></a>
                     </td>
                 </tr>
                 {% endfor %}
