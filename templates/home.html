@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <style>
+        .floating-effect {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .floating-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .dark-mode .form-control, .dark-mode .form-select {
+            background-color: #2b2b2b;
+            color: #ffffff;
+            border: 1px solid #555;
+        }
+        .dark-mode .form-control:focus, .dark-mode .form-select:focus {
+            background-color: #333;
+            color: #ffffff;
+            border-color: #777;
+        }
+        .dark-mode .form-text {
+            color: #b3b3b3;
+        }
+        .dark-mode .table {
+            color: #ffffff;
+        }
+        .dark-mode .table thead th {
+            border-bottom: 2px solid #444;
+        }
+        .dark-mode .table tbody tr {
+            border-bottom: 1px solid #555;
+        }
+        .dark-mode .table tbody tr:nth-of-type(odd) {
+            background-color: #2a2a2a;
+        }
+        .dark-mode .table tbody tr:nth-of-type(even) {
+            background-color: #242424;
+        }
+    </style>
+</head>
+<body onload="AOS.init(); checkTheme();">
+    <div class="container mt-5">
+        <div class="d-flex justify-content-end">
+            <button id="themeToggleBtn" class="btn btn-secondary mb-3">Toggle Theme</button>
+        </div>
+        <form method="post" class="floating-effect" data-aos="fade-up">
+            {% csrf_token %}
+            <div class="mb-3" data-aos="fade-up">
+                <label for="title" class="form-label">Title of the Todo</label>
+                <input type="text" class="form-control bg-dark text-light" name="title" id="title" aria-describedby="titleHelp" required>
+                <div id="titleHelp" class="form-text">Die with Memories Not with Dreams.</div>
+            </div>
+            <div class="mb-3" data-aos="fade-up">
+                <label for="desc" class="form-label">Description</label>
+                <input type="text" class="form-control bg-dark text-light" name="desc" id="desc" required>
+            </div>
+            <button type="submit" class="btn btn-primary" data-aos="fade-up">Create</button>
+        </form>
+
+        {% if Alltodos %}
+        <table class="table table-dark table-striped mt-5 floating-effect" data-aos="fade-up">
+            <thead>
+                <tr>
+                    <th scope="col">SlNo</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Operations</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for todo in Alltodos %}
+                <tr class="floating-effect" data-aos="fade-up">
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{todo.Title}}</td>
+                    <td>{{todo.DESC}}</td>
+                    <td>
+                        <!-- Add operations buttons here -->
+                        <button class="btn btn-warning btn-sm" data-aos="fade-up">Edit</button>
+                        <button class="btn btn-danger btn-sm" data-aos="fade-up">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <h1 class="mt-5" data-aos="fade-up">No todos created yet. Create your first todo now...</h1>
+        {% endif %}
+    </div>
+
+    <script>
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const body = document.body;
+
+        function setTheme(theme) {
+            body.classList.toggle('dark-mode', theme === 'dark');
+            document.querySelectorAll('.form-control').forEach(el => {
+                el.classList.toggle('bg-dark', theme === 'dark');
+                el.classList.toggle('text-light', theme === 'dark');
+            });
+            document.querySelectorAll('.table').forEach(el => {
+                el.classList.toggle('table-dark', theme === 'dark');
+            });
+        }
+
+        function checkTheme() {
+            const theme = localStorage.getItem('theme') || 'light';
+            setTheme(theme);
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+            setTheme(newTheme);
+        });
+
+        AOS.init({
+            duration: 800, // Duration of the animation in milliseconds
+            easing: 'ease-in-out', // Easing function for the animation
+        });
+    </script>
+</body>
+</html>
